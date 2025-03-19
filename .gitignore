@@ -1,3 +1,9 @@
+#dataset files
+coco/
+
+#tmp files
+wget-log
+
 # Python
 __pycache__/
 *.py[cod]

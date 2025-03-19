@@ -1,0 +1,13 @@
+[project]
+name = "gemma3-coco-finetune"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "numpy>=2.2.4",
+    "pillow>=11.1.0",
+    "pycocotools>=2.0.8",
+    "torch>=2.6.0",
+    "trl>=0.15.2",
+]
