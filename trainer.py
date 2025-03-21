@@ -54,7 +54,6 @@ args = SFTConfig(
     gradient_checkpointing_kwargs={"use_reentrant": False},
     dataset_text_field="",
     dataset_kwargs={"skip_prepare_dataset": True},
-    max_seq_length=128000,
 )
 args.remove_unused_columns = False
 
@@ -110,8 +109,8 @@ def collate_fn(examples):
         return batch
 
 
-# dataset = [sample for sample in CocoDataset().get_dataset()]
-dataset = CocoDataset().get_dataset()
+dataset = [sample for sample in CocoDataset().get_dataset()]
+# dataset = CocoDataset().get_dataset()
 trainer = SFTTrainer(
     model=model,
     args=args,
