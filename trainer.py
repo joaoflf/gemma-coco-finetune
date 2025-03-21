@@ -10,7 +10,7 @@ model_id = "google/gemma-3-4b-pt"
 tokenizer_id = "google/gemma-3-4b-it"
 
 model_kwargs = dict(
-    attn_implementation="eager", torch_dtype=torch.bfloat16, device_map="mps"
+    attn_implementation="eager", torch_dtype=torch.bfloat16, device_map="auto"
 )
 
 model_kwargs["quantization_config"] = BitsAndBytesConfig(
