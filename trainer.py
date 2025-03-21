@@ -93,16 +93,27 @@ def collate_fn(examples):
             text=texts, images=images, padding="max_length", return_tensors="pt"
         )
 
-        labels = batch["input_ids"]
+        labels = batch["input_ids"].clone()  # Create a copy to avoid modifying original
 
-        image_token_id = [
-            processor.tokenizer.convert_tokens_to_ids(
+        # Find the correct image token - adjust this based on your model's tokens
+        # Check if 'boi_token' exists in special_tokens_map
+        image_token_id = None
+        if "boi_token" in processor.tokenizer.special_tokens_map:
+            image_token_id = processor.tokenizer.convert_tokens_to_ids(
                 processor.tokenizer.special_tokens_map["boi_token"]
             )
-        ]
+        elif "<image>" in processor.tokenizer.special_tokens_map.values():
+            # Try finding by value instead
+            for key, value in processor.tokenizer.special_tokens_map.items():
+                if value == "<image>":
+                    image_token_id = processor.tokenizer.convert_tokens_to_ids(value)
+                    break
 
-        labels[labels == processor.tokenizer.pad_token_id] = -100
-        labels[labels == image_token_id] = -100
+        # Apply masking for image token if found
+        if image_token_id is not None:
+            labels[labels == image_token_id] = -100
+
+        # Apply masking for pad tokens
         labels[labels == 262144] = -100
 
         batch["labels"] = labels
